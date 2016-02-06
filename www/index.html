@@ -29,25 +29,29 @@
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" type="text/css" href="css/ionic.css" />
         <title>Road Trip</title>
-        <div class="bar bar-header bar-stable">
-            <h1 class="title">Road Trip</h1>
-        </div>
     </head>
-    <body>
-        <div class="app">
-            <div id="deviceready">
-                <div class ="event listening">LOADING...</div>
-                <div class="event received">
-                    <button class="button button-stable">Log in</button>
-                    <button class="button button-stable">Sign Up</button>
-                    <button class="button button-assertive">EXPLORE</button>
-                </div>
+    <body ng-controller="MainControl">
+        <ion-view view-title="Road Trip">
+            <div class="bar bar-header bar-dark">
+                <h1 class="title">Road Trip</h1>
             </div>
-        </div>
+            <ion-content>
+                <div id="deviceready">
+                    <div class ="event listening">
+                        <p>LOADING...</p>
+                    </div>
+                    <div class="event received">
+                        <button class="button button-block button-stable">Log in</button>
+                        <button class="button button-block button-stable">Sign Up</button>
+                        <button class="button button-block button-energized">EXPLORE</button>
+                    </div>
+                </div>
+            </ion-content>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
             app.initialize();
         </script>
+        </ion-view>
     </body>
 </html>
