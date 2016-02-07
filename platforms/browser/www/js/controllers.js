@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ionic', 'ngResource'])
 
 .controller('MainCtrl', function($scope) {})
 
@@ -17,8 +17,18 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
+
+/*
+ * API handlers
+ * code inspired by: devdactic.com/improving-rest-withngresource/
+ * AND learn.ionicframework.com/formulas/backend-data/
+ */
+
+//Add new user
+.controller('NewUser', function($scope, UserService) {
+  $scope.newUser = function(){
+    UserService.save({username:$scope.username, password:$scope.password, name:$scope.name, city:$scope.city, email:$scope.email},{});
+    }; 
 })
 
 .controller('AccountCtrl', function($scope) {

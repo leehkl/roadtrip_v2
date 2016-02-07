@@ -1,5 +1,12 @@
 angular.module('starter.services', [])
 
+/*
+ * API call handlers
+ */
+.factory('UserService', function($resource){
+  return $resource('https://road-1207.appspot.com/users:user'); 
+})
+
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
 

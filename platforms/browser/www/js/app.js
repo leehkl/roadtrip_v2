@@ -58,6 +58,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     }
   })
+  
+  .state('tab.signup', {
+    url: '/signup',
+    views: {
+      'tab-main': {
+        templateUrl: 'templates/signup.html',
+      }
+    }
+  })
 
   .state('tab.chats', {
       url: '/chats',
