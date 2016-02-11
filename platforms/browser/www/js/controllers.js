@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['ionic', 'ngResource'])
+angular.module('starter.controllers', ['starter.services','ionic', 'ngResource'])
 
 .controller('MainCtrl', function($scope) {})
 
@@ -29,6 +29,31 @@ angular.module('starter.controllers', ['ionic', 'ngResource'])
   $scope.newUser = function(){
     UserService.save({username:$scope.username, password:$scope.password, name:$scope.name, city:$scope.city, email:$scope.email},{});
     }; 
+})
+
+//Get all users/search for users
+.controller('GetUsers', function($scope, UserService){
+
+  //LOGIN PAGE
+  $scope.login = function(){
+    //search for user by username
+    $scope.users = UserService.get({username:$scope.username},
+      function(){
+        //get user-specific information
+        $scope.currentUser = $scope.users.keys[0];
+        $scope.user = UserService.get({id:$scope.users.keys[0]},
+          function(){
+            if($scope.user.password == $scope.password){
+              $scope.test = "Success!";
+            }else{
+              //clear text and display error
+              $scope.username = null;
+              $scope.password = null;
+              $scope.test = "Username or password is incorrect."
+            }
+          });
+    });
+  };
 })
 
 .controller('AccountCtrl', function($scope) {
