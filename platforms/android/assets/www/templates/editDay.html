@@ -50,9 +50,9 @@
     <button class="button button-small button-outline button-balanced" ng-click="addPhoto()">
         Take New Photo
     </button>
+    <p>Blob url is : {{blobURL.url}}</p>
       <ion-item class="padding" ng-repeat="photo in photos" type="item-text-wrap" href="#/tab/editDay/{{day.key}}">
-        <p>{{photo.photo}}</p>
-        <img ng-src="{{photo.photoSrc}}" style="max-width: 100%"/>
+      <img ng-src="{{photos.url}}" style="max-width:100%"/>
       </ion-item>
     </ion-list>
     <div>

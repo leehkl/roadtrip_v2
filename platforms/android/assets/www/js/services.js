@@ -28,6 +28,11 @@ angular.module('starter.services', ['ngResource'])
   return $resource('https://road-1207.appspot.com/get_upload_url');
 })
 
+//get blob
+.factory('Blob', function($resource){
+  return $resource('https://road-1207.appspot.com/viewPhoto/:pid', {pid:'@pid'});
+})
+
 //PHOTOS
 .factory('PhotoService', function($resource){
   return $resource('https://road-1207.appspot.com/users/:uid/trips/:tid/days/:did/photos/:pid'

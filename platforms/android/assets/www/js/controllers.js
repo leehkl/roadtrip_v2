@@ -5,7 +5,7 @@
 angular.module('starter.controllers', ['starter.services','ionic', 'ngResource', 'ngStorage', 'ngCordova'])
 
 .config(function($compileProvider){
-      $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
+      $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel|blob|cdvfile):|data:image\//);
 })
 
 .controller('MainCtrl', function($scope) {})
@@ -97,7 +97,7 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
   })
 
 //edit a day for a user/trip
-.controller('EditDayCtrl', function($scope, $localStorage, $stateParams, $cordovaFileTransfer, $cordovaCamera, $cordovaFile, $http, DayService, Camera, Blobstore, PhotoService) {
+.controller('EditDayCtrl', function($scope, $localStorage, $stateParams, $cordovaFileTransfer, $cordovaCamera, $cordovaFile, $http, DayService, Camera, Blobstore, PhotoService, Blob) {
 
   //set global vars
   var currentUser = $localStorage.currentUser;
@@ -122,11 +122,7 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
   });
 
   //get photos
-  $scope.photos = PhotoService.query({uid:currentUser, tid:tripKey, did:dayKey}
-      , function(){
-
-      });
-
+  $scope.photos = PhotoService.query({uid:currentUser, tid:tripKey, did:dayKey});
 
   //open camera
   $scope.addPhoto = function(){
@@ -147,39 +143,39 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
   $scope.uploadFile = function(files){
     image = new FormData();
     image.append("file", files[0]);
-  }
+  };
 
   $scope.submitPhoto = function(){
     //get blobstore url
-//      var url = encodeURI(Blobstore.get());
-   var url = "http://road-1207.appspot.com/_ah/upload/AMmfu6aG3emnDJ4ZWcFSD_ZDmdiY2wNM1nU2htjOxIxt4EUU0cJGtxt0dLCqsouTWrViHSCmSexd8ZcPf9g1sCtUOoX4xhPoF0Xpd2FLKXo9-elg2okFT3VY-cLxsedbb-BLXBNuU2Lx/ALBNUaYAAAAAVr72jK0E7SIg5JBbLRm8nychlCQBvmbR/"; 
-    console.log("url " + url);
-    console.log("$scope.lastPhoto " +$scope.lastPhoto);
-    //console.log(image);
-    var options = new FileUploadOptions();
-//      options.filekey="post";
-    options.chunkedMode=false;
-    var ft = new FileTransfer();
-    var key = ft.upload($scope.lastPhoto, encodeURI(url), onUploadSuccess, onUploadFail, options);
-    console.log("key is " +key);
-  }
-    var onUploadSuccess = function(r){
-      console.log("sucess! Code =  "+ r.responseCode);
-      console.log("Response =  "+ r.response);
-      console.log("Sent=  "+ r.bytesSent);
-      var photoKey = r.response;
-      console.log("key " +photoKey);
-      var photoResult = PhotoService.save({uid: currentUser, tid: tripKey, did:dayKey, pid: photoKey }, {}, function(result){
-        console.log(JSON.stringify(result.response));
-      }); 
-      
-    };
+      $scope.blobURL = Blobstore.get(function(){
+      console.log("$scope.blobURL.url " + $scope.blobURL.url);
+      console.log("$scope.lastPhoto " +$scope.lastPhoto);
+      var options = new FileUploadOptions();
+      options.chunkedMode=false;
+      var ft = new FileTransfer();
+      ft.upload($scope.lastPhoto, encodeURI($scope.blobURL.url), onUploadSuccess, onUploadFail, options);
+    });
+      var onUploadSuccess = function(r){
+        var photoKey = angular.fromJson(r.response);
+        photoKey = photoKey.key;
+        console.log("sucess! Code =  "+ r.responseCode);
+        console.log("Response =  "+ r.response);
+        console.log("Sent=  "+ r.bytesSent);
+        console.log("key " +photoKey);
+        var photoResult = PhotoService.save({uid: currentUser, tid: tripKey, did:dayKey, pid: photoKey }, {}, function(result){
+          console.log(JSON.stringify(result.response));
+        }); 
+        
+      };
 
-    var onUploadFail = function(error){
-      console.log("failed " +error.code);
-      console.log("upload error source " +error.source);
-      console.log("upload error target " +error.target);
-    };
+      var onUploadFail = function(error){
+        console.log("failed " +error.code);
+        console.log("upload error source " +error.source);
+        console.log("upload error target " +error.target);
+      };
+
+      };
+//    $scope.blobURL = angular.fromJson(blobURL.url);
 })
 
 //add a day for a user/trip
