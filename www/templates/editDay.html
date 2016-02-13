@@ -44,10 +44,23 @@
     <div>
       <p class="balanced" >{{result}}</p>
     </div>
-    <p>
-      <button ng-click="addPhoto()" class="button button-block button-stable">Add a Photo</button>
-      <img ng-src="{{lastPhoto}}" style="max-width: 100%">
-    </p>
+    <ion-list class="padding">
+    <h3 class="balanced">Photos
+    </h3>
+    <button class="button button-small button-outline button-balanced" ng-click="addPhoto()">
+        Take New Photo
+    </button>
+      <ion-item class="padding" ng-repeat="photo in photos" type="item-text-wrap" href="#/tab/editDay/{{day.key}}">
+        <p>{{photo.photo}}</p>
+        <img ng-src="{{photo.photoSrc}}" style="max-width: 100%"/>
+      </ion-item>
+    </ion-list>
+    <div>
+      <form method="POST" enctype="multipart/form-data" ng-submit="submitPhoto()">
+        <input type="file" onchange="angular.element(this).scope().uploadFile(this.files)"/>
+        <input type="submit" value="Add Photo">
+      </form>
+    </div>
 <!--    <ion-list class="padding">
     <h3 class="balanced">Days
       <a href="#tab/addDay"><i class="ion-android-add" href="#/tab/addDay"></i></a>

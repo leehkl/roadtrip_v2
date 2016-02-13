@@ -48,6 +48,12 @@
       <button ng-click="addPhoto()" class="button button-block button-stable">Add a Photo</button>
       <img ng-src="{{lastPhoto}}" style="max-width: 100%">
     </p>
+    <div>
+      <form method="POST" enctype="multipart/form-data" ng-submit="submitPhoto()">
+        <input type="file" name="file">
+        <input type="submit" value="Add Photo">
+      </form>
+    </div>
 <!--    <ion-list class="padding">
     <h3 class="balanced">Days
       <a href="#tab/addDay"><i class="ion-android-add" href="#/tab/addDay"></i></a>

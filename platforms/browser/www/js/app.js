@@ -7,6 +7,10 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
+.config(function($compileProvider){
+      $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
+  })
+
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -84,6 +88,36 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       'tab-account': {
         templateUrl: 'templates/account.html',
         controller: 'AccountCtrl'
+      }
+    }
+  })
+
+  .state('tab.editTrip', {
+    url: '/account/:tripkey',
+    views: {
+      'tab-account': {
+        templateUrl: 'templates/editTrip.html',
+        controller: 'EditTripCtrl'
+      }
+    }
+  })
+  
+  .state('tab.editDay', {
+    url: '/editDay/:daykey',
+    views: {
+      'tab-account': {
+        templateUrl: 'templates/editDay.html',
+        controller: 'EditDayCtrl'
+      }
+    }
+  })
+
+  .state('tab.addDay', {
+    url: '/addDay',
+    views: {
+      'tab-account': {
+        templateUrl: 'templates/addDay.html',
+        controller: 'AddDayCtrl'
       }
     }
   });
