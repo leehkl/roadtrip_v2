@@ -39,6 +39,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     .state('tab', {
     url: '/tab',
     abstract: true,
+    cache: false,
     templateUrl: 'templates/tabs.html'
   })
 
@@ -46,6 +47,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
   .state('tab.main', {
     url: '/main',
+    cache: false,
     views: {
       'tab-main': {
         templateUrl: 'templates/main.html',
@@ -56,6 +58,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
   .state('tab.login', {
     url: '/login',
+    cache: false,
     views: {
       'tab-main': {
         templateUrl: 'templates/login.html',
@@ -65,6 +68,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   
   .state('tab.signup', {
     url: '/signup',
+    cache: false,
     views: {
       'tab-main': {
         templateUrl: 'templates/signup.html',
@@ -74,6 +78,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
   .state('tab.camera', {
       url: '/camera',
+      cache: false,
       views: {
         'tab-camera': {
           templateUrl: 'templates/camera.html',
@@ -84,6 +89,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
   .state('tab.account', {
     url: '/account',
+    cache: false,
     views: {
       'tab-account': {
         templateUrl: 'templates/account.html',
@@ -94,6 +100,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
   .state('tab.editTrip', {
     url: '/account/:tripkey',
+    cache: false,
     views: {
       'tab-account': {
         templateUrl: 'templates/editTrip.html',
@@ -104,6 +111,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   
   .state('tab.editDay', {
     url: '/editDay/:daykey',
+    cache: false,
     views: {
       'tab-account': {
         templateUrl: 'templates/editDay.html',
@@ -111,13 +119,36 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     }
   })
-
+  
+  .state('tab.addTrip', {
+    url: '/addTrip',
+    cache: false,
+    views: {
+      'tab-account': {
+        templateUrl: 'templates/addTrip.html',
+        controller: 'AddTripCtrl'
+      }
+    }
+  })
+  
   .state('tab.addDay', {
     url: '/addDay',
+    cache: false,
     views: {
       'tab-account': {
         templateUrl: 'templates/addDay.html',
         controller: 'AddDayCtrl'
+      }
+    }
+  })
+
+  .state('tab.addPhoto', {
+    url: '/addPhoto',
+    cache: false,
+    views: {
+      'tab-account': {
+        templateUrl: 'templates/addPhoto.html',
+        controller: 'AddPhotoCtrl'
       }
     }
   });

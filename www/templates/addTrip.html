@@ -1,0 +1,54 @@
+<!--
+ regex for valid decimals and angular.js form validation inspired by:
+  gsferreira.com/archive/2015/02/angularjs-input-number-with-two-decimal-places/
+-->
+<ion-view view-title="Add Trip">
+  <ion-content class="padding">
+  <h3 class="balanced">TRIP</h3>
+  <div ng-controller="AddTripCtrl">
+    <form ng-submit="addTrip()" name="tripAdd">
+        <div class="list">
+          <label class="item item-input">
+            <span class="input-label">Name</span>
+            <input type="text" name="nameAdd" ng-model="name" required/>
+          </label>
+          <label class="item item-input">
+            <span class="input-label">Source</span>
+            <input type="text" ng-model="source"/>
+          </label>
+          <label class="item item-input">
+            <span class="input-label">Destination</span>
+            <input type="text" ng-model="destination"/>
+          </label>
+            <label class="item item-input">
+            <span class="input-label">Miles</span>
+            <input type="number" name="milesAdd" min="0" ng-model="miles" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"/>
+          </label>
+          <label class="item item-input">
+            <span class="input-label">Time</span>
+            <input type="number" name="timeAdd" min="0" ng-model="time" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"/>
+          </label>
+          <label class="item item-input">
+            <span class="input-label">Mode</span>
+            <input type="text" ng-model="mode"/>
+          </label>
+        </div>
+        <div class="padding">
+          <p class="assertive" ng-show="tripAdd.nameAdd.$error.required">
+          *Give your trip a name!
+          </p>
+          <p class="assertive" ng-show="!tripAdd.milesAdd.$valid">
+          *Miles needs to be a valid decimal!
+          </p>
+          <p class="assertive" ng-show="!tripAdd.timeAdd.$valid">
+          *Time needs to be a valid decimal!
+          </p>
+        <input type="submit" class="button button-outline button-balanced" value="Submit"/>
+      </div>
+      </form>
+    </div>
+    <p class="balanced">
+      {{result}}
+    </p>
+  </ion-content>
+</ion-view>

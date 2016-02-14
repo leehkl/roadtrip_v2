@@ -6,7 +6,8 @@ angular.module('starter.services', ['ngResource'])
 
 //USERS
 .factory('UserService', function($resource){
-  return $resource('https://road-1207.appspot.com/users/:id',{id:'@id'},{'query': {method:'GET', isArray:false}});
+  return $resource('https://road-1207.appspot.com/users/:id',{id:'@id'}
+    ,{'update':{method:'PUT'}});
 }) 
 
 //TRIPS
@@ -26,11 +27,6 @@ angular.module('starter.services', ['ngResource'])
 //get blobstoreURL
 .factory('Blobstore', function($resource){
   return $resource('https://road-1207.appspot.com/get_upload_url');
-})
-
-//get blob
-.factory('Blob', function($resource){
-  return $resource('https://road-1207.appspot.com/viewPhoto/:pid', {pid:'@pid'});
 })
 
 //PHOTOS

@@ -52,18 +52,110 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
 })
 
 //get account/trip information for user
-.controller('AccountCtrl', function($scope, $localStorage, UserService, TripService) {
+.controller('AccountCtrl', function($scope, $localStorage, $ionicHistory, $state, UserService, TripService) {
   //FOR TESTING PURPOSES ONLY
-  $localStorage.currentUser = 5634472569470976;
+//  $localStorage.currentUser = 5634472569470976;
   //END TESTING STRING
-
+  
+  
   var currentUser = $localStorage.currentUser;
+  console.log("currentuser " + currentUser);
+  
+  if(currentUser === undefined || currentUser === null){
+    $ionicHistory.clearCache();
+    $ionicHistory.clearHistory();
+    $ionicHistory.nextViewOptions({disableBack: true, historyRoot: true});
+    alert("You must log in first");
+    $state.go('tab.main');
+  }
 
   //get profile info
-  $scope.profileInfo = UserService.get({id:currentUser});
+  $scope.profileInfo = UserService.get({id:currentUser}, function(){
+    //create copy for comparison later
+    originalProfile = angular.copy($scope.profileInfo);
+  });
   //get trips
   $scope.trips = TripService.query({uid:currentUser});
-  })
+
+  //update profile info
+  $scope.editProfile = function(){
+    //clear out result string displayed on screen
+    $scope.result = null;
+    $scope.badResult = null;
+
+    console.log("originalProfile " + originalProfile.username);
+    
+    //check if email is different function
+    var checkEmail = function(){
+      if($scope.profileInfo.email != originalProfile.email){
+        $scope.existing = UserService.get({email: $scope.profileInfo.email},
+            function(){
+              if($scope.existing.keys.length != 0){
+                $scope.badResult = "Email is already in use.";
+              }else{
+                updateUser();
+              }
+           });
+      }else{
+        updateUser();
+      }
+    };
+
+    //update function
+    var updateUser = function(){
+      $scope.updatedUser = UserService.update({id: currentUser, username: $scope.profileInfo.username, name: $scope.profileInfo.name, city: $scope.profileInfo.city, email: $scope.profileInfo.email},{}, 
+          function(){
+            //create copy for comparison later
+            originalProfile = angular.copy($scope.updatedUser);
+            $scope.result = "Changes saved!";
+          })  
+    };
+
+    //check username if changed
+    if($scope.profileInfo.username != originalProfile.username){
+      $scope.existing = UserService.get({username:$scope.profileInfo.username},
+        function(){
+          //get user-specific information
+          if($scope.existing.keys.length != 0){
+           console.log("existing is "+ $scope.existing.keys.length);
+           $scope.badResult = "Dang! Username already exists.";
+          }else{
+            checkEmail();
+          }
+        });
+    }else{
+      checkEmail();
+    } 
+
+  //log out a user
+  $scope.logOut = function(){
+    //reset local params
+    $localStorage.$reset();
+    $ionicHistory.clearCache();
+    $ionicHistory.clearHistory();
+    $ionicHistory.nextViewOptions({disableBack: true, historyRoot: true});
+    $state.go('tab.main');
+  };
+  
+    
+  };
+})
+
+//iadd a trip for a user
+.controller('AddTripCtrl', function($scope, $localStorage, TripService) {
+
+  //set current account 
+  var currentUser = $localStorage.currentUser;
+ 
+  //update trip info
+  $scope.addTrip = function(){
+    console.log("name" + $scope.name);
+    var tripKey = TripService.save({uid:currentUser, "name": $scope.name, "source":$scope.source, "destination": $scope.destination, "miles":$scope.miles, "time": $scope.time, "mode": $scope.mode}, {}
+      , function(){
+        $scope.result = "Trip Added!";
+    })
+  };
+})
 
 //edit a trip for a user
 .controller('EditTripCtrl', function($scope, $stateParams, $localStorage, TripService, DayService, PhotoService) {
@@ -74,8 +166,8 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
   var tripKey = $localStorage.currentTrip;
   
   //FOR TESTING PURPOSES ONLY
-  var tripKey = 5707702298738688;
-  $localStorage.currentTrip = tripKey;
+// var tripKey = 5707702298738688;
+  //$localStorage.currentTrip = tripKey;
   //END testing string
 
   //get trip
@@ -97,15 +189,16 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
   })
 
 //edit a day for a user/trip
-.controller('EditDayCtrl', function($scope, $localStorage, $stateParams, $cordovaFileTransfer, $cordovaCamera, $cordovaFile, $http, DayService, Camera, Blobstore, PhotoService, Blob) {
+.controller('EditDayCtrl', function($scope, $localStorage, $stateParams, DayService, PhotoService) {
 
   //set global vars
   var currentUser = $localStorage.currentUser;
   var tripKey = $localStorage.currentTrip;
   var dayKey = $stateParams.daykey;
+  $localStorage.currentDay = dayKey;
 
   //FOR TESTING PURPOSES ONLY
-  var dayKey = 5649050225344512;
+//var dayKey = 5649050225344512;
   //end testing string
 
   //get day 
@@ -124,17 +217,28 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
   //get photos
   $scope.photos = PhotoService.query({uid:currentUser, tid:tripKey, did:dayKey});
 
+})
+
+.controller('AddPhotoCtrl', function($scope, $localStorage, $cordovaFileTransfer, $cordovaCamera, $cordovaFile, $http, Camera, Blobstore, PhotoService) {
+
+  //set global vars
+  var currentUser = $localStorage.currentUser;
+  var tripKey = $localStorage.currentTrip;
+  var dayKey = $localStorage.currentDay;
+
+  //FOR TESTING PURPOSES ONLY
+  //end testing string
+
   //open camera
-  $scope.addPhoto = function(){
+  $scope.takePhoto = function(){
     Camera.getPicture({
       quality:75,
       targetWidth: 320,
       targetHeight: 320,
       saveToPhotoAlbum:true 
-//        destinationType: 0
     }).then(function(imageURI){
       $scope.lastPhoto = imageURI;
-      console.log(imageURI);
+      console.log("success takephoto " + imageURI);
     }, function(err){
       console.err(err);
     });
@@ -143,6 +247,20 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
   $scope.uploadFile = function(files){
     image = new FormData();
     image.append("file", files[0]);
+  };
+
+  $scope.uploadPhoto = function(){
+    Camera.getPicture({
+      quality:75,
+      targetWidth: 320,
+      targetHeight: 320,
+      sourceType: 0 //from photo library
+    }).then(function(imageURI){
+      $scope.lastPhoto = imageURI;
+      console.log("success uploadphoto " + imageURI);
+    }, function(err){
+      console.err(err);
+    });
   };
 
   $scope.submitPhoto = function(){
@@ -163,7 +281,6 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
         console.log("Sent=  "+ r.bytesSent);
         console.log("key " +photoKey);
         var photoResult = PhotoService.save({uid: currentUser, tid: tripKey, did:dayKey, pid: photoKey }, {}, function(result){
-          console.log(JSON.stringify(result.response));
         }); 
         
       };
@@ -175,7 +292,6 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
       };
 
       };
-//    $scope.blobURL = angular.fromJson(blobURL.url);
 })
 
 //add a day for a user/trip

@@ -1,0 +1,20 @@
+<!--
+ regex for valid decimals and angular.js form validation inspired by:
+  gsferreira.com/archive/2015/02/angularjs-input-number-with-two-decimal-places/
+-->
+<ion-view view-title="Add Photo">
+  <ion-content class="padding">
+    <div class="padding">
+      <form method="POST" enctype="multipart/form-data" ng-submit="submitPhoto()">
+      <button class="button button-icon icon ion-android-camera" ng-click="takePhoto()">
+        Take New Photo
+      </button>
+      <button class="button button-icon icon ion-images" ng-click="uploadPhoto()">
+        Upload Photo
+      </button>
+      <img ng-src="{{lastPhoto}}" style="max-width:100%"/>
+      <input type="submit" class="button button-outline button-balanced" value="Add Photo">
+    </form>
+  </div>
+  </ion-content>
+</ion-view>

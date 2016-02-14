@@ -1,6 +1,5 @@
 <!--
- regex for valid decimals and angular.js form validation inspired by:
-  gsferreira.com/archive/2015/02/angularjs-input-number-with-two-decimal-places/
+ prettify images inspired by: devdactic.com/images-videso-fullscreen-ionic
 -->
 <ion-view view-title="Edit Trip">
   <ion-content class="padding">
@@ -44,27 +43,11 @@
     </form>
     <ion-list class="padding">
     <h3 class="balanced">Photos
+      <a href="#tab/addPhoto"><i class="ion-android-add" href="#/tab/addPhoto"></i></a>
     </h3>
-    <button class="button button-small button-outline button-balanced" ng-click="addPhoto()">
-        Take New Photo
-    </button>
-      <ion-item class="padding" ng-repeat="photo in photos" type="item-text-wrap" href="#/tab/editDay/{{day.key}}">
-      <img ng-src="{{photo.url}}" style="max-width:100%"/>
-      </ion-item>
-    </ion-list>
-    <div>
-      <form method="POST" enctype="multipart/form-data" ng-submit="submitPhoto()">
-        <input type="file" onchange="angular.element(this).scope().uploadFile(this.files)"/>
-        <input type="submit" value="Add Photo">
-      </form>
-    </div>
-<!--    <ion-list class="padding">
-    <h3 class="balanced">Days
-      <a href="#tab/addDay"><i class="ion-android-add" href="#/tab/addDay"></i></a>
-    </h3>
-      <ion-item ng-repeat="day in days" type="item-text-wrap" href="#/tab/editDay/{{day.key}}">
-        <p>{{day.name}}</p>
-      </ion-item>
-    </ion-list>
--->  </ion-content>
+    <ion-item class="padding" ng-repeat="photo in photos" type="item-text-wrap" href="#/tab/deletePhoto/{{photo.photo}}">
+    <img ng-src="{{photo.url}}" style="max-width: 100%"/>
+    </ion-item>
+   </ion-list>
+ </ion-content>
 </ion-view>
