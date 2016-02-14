@@ -8,29 +8,18 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
       $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel|blob|cdvfile):|data:image\//);
 })
 
-.controller('MainCtrl', function($scope) {})
+.controller('MainCtrl', function($scope, $localStorage, $state, $ionicHistory, UserService) {
+  
+  var currentUser = $localStorage.currentUser;
 
-/*
- * API handlers
- * code inspired by: devdactic.com/improving-rest-withngresource/
- * AND learn.ionicframework.com/formulas/backend-data/
- */
-
-//USERS
-//Add new user
-.controller('NewUser', function($scope, $localStorage, UserService) {
-  $scope.newUser = function(){
-    UserService.save({username:$scope.username, password:$scope.password, name:$scope.name, city:$scope.city, email:$scope.email},{});
-    }; 
-})
-
-//Get all users/search for users
-.controller('GetUsers', function($scope, $localStorage, UserService){
-
+  if(currentUser !== undefined && currentUser !== null){
+    $state.go('tab.active');
+  }
+  
   //LOGIN PAGE
   $scope.login = function(){
     //search for user by username
-    $scope.users = UserService.get({username:$scope.username},
+    $scope.users = UserService.get({username:$scope.username}, {},
       function(){
         //get user-specific information
         var currentUser = $scope.users.keys[0];
@@ -39,7 +28,9 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
             if($scope.user.password == $scope.password){
               $localStorage.currentUser = currentUser;
 //              $scope.test = "Success!";
-              $scope.test = $localStorage.currentUser;
+//              $scope.test = $localStorage.currentUser;
+              console.log('current user is ' + currentUser);
+              $state.go('tab.active');
             }else{
               //clear text and display error
               $scope.username = null;
@@ -49,6 +40,65 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
           });
     });
   };
+  
+  //check if existing email
+  var checkEmail = function(){
+      $scope.existing = UserService.get({email: $scope.email},
+          function(){
+            if($scope.existing.keys.length != 0){
+              $scope.badResult = "Email is already in use.";
+            }else{
+              UserService.save({username:$scope.username, password:$scope.password, name:$scope.name, city:$scope.city, email:$scope.email},{}
+                  ,function(){
+                    $state.go('tab.login');
+                    alert("Please log in with new credentials");
+                  });
+            }
+         });
+  };
+  
+  $scope.newUser = function(){
+    //clear out result string displayed on screen
+    $scope.badResult = null;
+
+    //check username existing
+    $scope.existing = UserService.get({username:$scope.username},
+      function(){
+        //get user-specific information
+        if($scope.existing.keys.length != 0){
+         console.log("existing is "+ $scope.existing.keys.length);
+         $scope.badResult = "Dang! Username already exists.";
+        }else{
+          checkEmail();
+        }
+      });
+    
+    
+    
+  }; 
+
+  //log out a user
+  $scope.logOut = function(){
+    //reset local params
+    $localStorage.$reset();
+    $ionicHistory.clearCache();
+    $ionicHistory.clearHistory();
+    $ionicHistory.nextViewOptions({disableBack: true, historyRoot: true});
+    $state.go('tab.main');
+  };
+
+})
+
+/*
+ * API handlers
+ * code inspired by: devdactic.com/improving-rest-withngresource/
+ * AND learn.ionicframework.com/formulas/backend-data/
+ */
+
+//USERS
+//Get all users/search for users
+.controller('GetUsers', function($scope, $localStorage, UserService){
+
 })
 
 //get account/trip information for user
@@ -56,7 +106,6 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
   //FOR TESTING PURPOSES ONLY
 //  $localStorage.currentUser = 5634472569470976;
   //END TESTING STRING
-  
   
   var currentUser = $localStorage.currentUser;
   console.log("currentuser " + currentUser);
@@ -121,18 +170,6 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
       checkEmail();
     } 
 
-
-  //log out a user
-  $scope.logOut = function(){
-    //reset local params
-    $localStorage.$reset();
-    $ionicHistory.clearCache();
-    $ionicHistory.clearHistory();
-    $ionicHistory.nextViewOptions({disableBack: true, historyRoot: true});
-    $state.go('tab.main');
-  };
-  
-    
   };
 })
 

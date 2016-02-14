@@ -1,6 +1,6 @@
 <ion-view name='login' view-title="Log In">
   <ion-content class="padding">
-    <div ng-controller="GetUsers">
+    <div ng-controller="MainCtrl">
       <form novalidate ng-submit="login()">
         <div class="list">
           <label class="item item-input">
@@ -12,9 +12,7 @@
         </div>
         <input type="submit" class="button button-outline button-balanced" value="Login"/>
         </form>
-        <div>
-          <p class="assertive">{{test}}</p>
-        </div>
+        <p>{{test}}</p>
       </div>
   </ion-content>
 </ion-view>

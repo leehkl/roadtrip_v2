@@ -55,6 +55,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     }
   })
+  
+  .state('tab.active', {
+    url: '/active',
+    cache: false,
+    views: {
+      'tab-main': {
+        templateUrl: 'templates/active.html',
+        controller: 'MainCtrl'
+      }
+    }
+  })
 
   .state('tab.login', {
     url: '/login',
@@ -62,6 +73,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     views: {
       'tab-main': {
         templateUrl: 'templates/login.html',
+        controller: 'MainCtrl'
       }
     }
   })
@@ -72,6 +84,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     views: {
       'tab-main': {
         templateUrl: 'templates/signup.html',
+        controller: 'MainCtrl'
       }
     }
   })

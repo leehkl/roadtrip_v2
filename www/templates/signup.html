@@ -3,8 +3,8 @@
 -->
 <ion-view name='signup' view-title="Sign Up">
   <ion-content class="padding">
-    <div ng-controller="NewUser">
-      <form novalidate ng-submit="newUser()">
+    <div ng-controller="MainCtrl">
+      <form ng-submit="newUser()" name="signup">
         <div class="list">
           <label class="item item-input">
             <input type="text" ng-model="name" required placeholder="Name"/><br />
@@ -19,10 +19,27 @@
             <input type="text" ng-model="city" placeholder="City"/><br />
           </label>
           <label class="item item-input">
-            <input type="email" ng-model="email" required placeholder="Email"/><br />
+            <input type="text" name="email" ng-model="email" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" required placeholder="Email"/><br/>
         </div>
         <input type="submit" class="button button-outline button-balanced" value="Submit"/>
-      </form>
+        <div class="padding">
+          <p class="assertive" ng-show="signup.name.$error.required">
+          *Gotta have a name!
+          </p>
+          <p class="assertive" ng-show="signup.username.$error.required">
+          *What's in a username? EVERYTHING!
+          </p>
+          <p class="assertive" ng-show="signup.password.$error.required">
+          *Need a password!
+          </p>
+          <p class="assertive" ng-show="!signup.email.$valid">
+          *Invalid Email!
+          </p>
+        </div>
+        </form>
+      <div>
+        <p class="assertive">{{badResult}}</p>
+      </div>
     </div>
   </ion-content>
 </ion-view>
