@@ -30,15 +30,16 @@
           </label>
         </div>
         <div class="padding">
-          <p class="assertive" ng-show="dayAdd.nameAdd.$error.required">
+          <p class="assertive" ng-show="DayAdd.nameAdd.$error.required">
           *Give your day a name!
           </p>
-          <p class="assertive" ng-show="!dayAdd.milesAdd.$valid">
+          <p class="assertive" ng-show="!DayAdd.milesAdd.$valid">
           *Miles needs to be a valid decimal!
           </p>
-          <p class="assertive" ng-show="!daypAdd.timeAdd.$valid">
+          <p class="assertive" ng-show="!DayAdd.timeAdd.$valid">
           *Time needs to be a valid decimal!
           </p>
+        </div>
         <input type="submit" class="button button-outline button-balanced" value="Submit"/>
       </div>
       </form>

@@ -398,7 +398,10 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
   };
 })
 
-//add a day for a user/trip
-.controller('ExploreCtrl', function($scope, $localStorage, DayService) {
+//catalogue of photos
+.controller('ExploreCtrl', function($scope, $localStorage, $ionicModal, PhotoDelete) {
+  $scope.photos= PhotoDelete.query({}, function(){
+    console.log("success for now"); 
+    });
 
 });

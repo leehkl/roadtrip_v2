@@ -1,5 +1,18 @@
-<ion-view view-title="Road Trip">
+<!--
+The following gallery code was inspired by:
+forum.ionicframework.com/t/collection-repeate-grid-with-scaled-square-images-to-fill-width/26936/4
+-->
+<ion-view view-title="Explore" class="energized">
   <ion-content class="padding">
-  <p>EXPLORE</p>
+  <div collection-repeat="photo in photos" style="padding:0px" class="col col-33">
+    <div style="background-image: url({{photo.url}});
+      background-repeat:no-repeat;
+      background-size:contain;
+      width:100%;
+      height:0;
+      padding-top:100%">
+    </div>
+  </div>
+
   </ion-content>
 </ion-view>
