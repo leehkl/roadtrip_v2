@@ -41,13 +41,6 @@
       <input type="submit" class="button button-outline button-balanced" value="Submit"/>
       <p class="balanced" >{{result}}</p>
     </form>
-    <ion-list class="padding">
-    <h3 class="balanced">Photos
-      <a href="#tab/addPhoto"><i class="ion-android-add" href="#/tab/addPhoto"></i></a>
-    </h3>
-    <ion-item class="padding" ng-repeat="photo in photos" type="item-text-wrap" href="#/tab/deletePhoto/{{photo.photo}}">
-    <img ng-src="{{photo.url}}" style="max-width: 100%"/>
-    </ion-item>
-   </ion-list>
+    <a class="button icon-right ion-chevron-right button-block button-energized" href="#tab/photos" align="left">PHOTOS</a>
  </ion-content>
 </ion-view>

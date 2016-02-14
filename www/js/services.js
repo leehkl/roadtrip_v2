@@ -36,6 +36,11 @@ angular.module('starter.services', ['ngResource'])
     ,{update:{method:'PUT', isArray:false}});
 })
 
+.factory('PhotoDelete', function($resource){
+  return $resource('https://road-1207.appspot.com/photos/:pid'
+    ,{pid:'@pid'});
+})
+
 
 //camera
 .factory('Camera', ['$q', function($q){

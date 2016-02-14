@@ -62,9 +62,6 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
   console.log("currentuser " + currentUser);
   
   if(currentUser === undefined || currentUser === null){
-    $ionicHistory.clearCache();
-    $ionicHistory.clearHistory();
-    $ionicHistory.nextViewOptions({disableBack: true, historyRoot: true});
     alert("You must log in first");
     $state.go('tab.main');
   }
@@ -139,11 +136,16 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
   };
 })
 
-//add a trip for a user
-.controller('TripCtrl', function($scope, $localStorage, $state, TripService) {
+//add a trip or delete a trip for a user
+.controller('TripCtrl', function($scope, $localStorage, $state,$ionicHistory, TripService) {
 
   //set current account 
   var currentUser = $localStorage.currentUser;
+  
+  //flag for no-show delete state
+  $scope.data = {
+    showDelete:false
+  }
   
   //get trips
   $scope.trips = TripService.query({uid:currentUser});
@@ -162,31 +164,28 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
     console.log("trip key delete is "+ tripKey);
     TripService.delete({uid: currentUser, tid: tripKey},
         function(){
-          $state.go($state.current, {}, {reload: true});
+//          $ionicHistory.nextViewOptions({disableBack: true, historyRoot: true});
+          $state.go($state.current, {$ionicHistory}, {location:'replace', reload:true});
         }
         );
   };
 })
 
 //edit a trip for a user
-.controller('EditTripCtrl', function($scope, $stateParams, $localStorage, $state, TripService, DayService, PhotoService) {
+.controller('EditTripCtrl', function($scope, $stateParams, $localStorage, $state, TripService) {
 
   //set global vars
   var currentUser = $localStorage.currentUser;
   $localStorage.currentTrip = $stateParams.tripkey;
   var tripKey = $localStorage.currentTrip;
   
-  //flag for no-show delete state
-  $scope.data = {
-    showDelete:false
-  }
   //FOR TESTING PURPOSES ONLY
 // var tripKey = 5707702298738688;
   //$localStorage.currentTrip = tripKey;
   //END testing string
 
   //get trips
-  $scope.trips = TripService.query({uid:currentUser});
+  //$scope.trips = TripService.query({uid:currentUser});
 
   //get trip
   $scope.trip = TripService.get({uid:currentUser, tid: tripKey},
@@ -201,14 +200,45 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
     
   });
 
-  //get days
-  $scope.days = DayService.query({uid:currentUser, tid:tripKey});
-  
-
   })
 
+//add a day or delete a day for a user/trip
+.controller('DayCtrl', function($scope, $localStorage, $state, DayService) {
+
+  //set current account 
+  var currentUser = $localStorage.currentUser;
+  var tripKey = $localStorage.currentTrip;
+  
+  //flag for no-show delete state
+  $scope.data = {
+    showDelete:false
+  }
+  
+  //get days
+  $scope.days = DayService.query({uid:currentUser, tid:tripKey});
+ 
+  //add day 
+  $scope.addDay = function(){
+    console.log("name" + $scope.name);
+    DayService.save({uid:currentUser,tid:tripKey, "name": $scope.name, "source":$scope.source, "destination": $scope.destination, "miles":$scope.miles, "time": $scope.timee}, {}
+      , function(){
+        $state.go('tab.days');
+    })
+  };
+  
+  //delete day
+  $scope.deleteDay = function(dayKey){
+    console.log("day key delete is "+ dayKey);
+    DayService.delete({uid: currentUser, tid: tripKey, did: dayKey},
+        function(){
+          $state.go($state.current, {}, {reload: true});
+        }
+        );
+  };
+})
+
 //edit a day for a user/trip
-.controller('EditDayCtrl', function($scope, $localStorage, $stateParams, DayService, PhotoService) {
+.controller('EditDayCtrl', function($scope, $localStorage, $stateParams, DayService) {
 
   //set global vars
   var currentUser = $localStorage.currentUser;
@@ -233,17 +263,23 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
 
   });
 
-  //get photos
-  $scope.photos = PhotoService.query({uid:currentUser, tid:tripKey, did:dayKey});
-
 })
 
-.controller('AddPhotoCtrl', function($scope, $localStorage, $cordovaFileTransfer, $cordovaCamera, $cordovaFile, $http, Camera, Blobstore, PhotoService) {
+.controller('PhotoCtrl', function($scope, $localStorage, $cordovaFileTransfer, $cordovaCamera, $cordovaFile, $http, $state, Camera, Blobstore, PhotoService, PhotoDelete) {
 
   //set global vars
   var currentUser = $localStorage.currentUser;
   var tripKey = $localStorage.currentTrip;
   var dayKey = $localStorage.currentDay;
+  
+  //flag for no-show delete state
+  $scope.data = {
+    showDelete:false
+  }
+  
+  //get photos
+  $scope.photos = PhotoService.query({uid:currentUser, tid:tripKey, did:dayKey});
+
 
   //FOR TESTING PURPOSES ONLY
   //end testing string
@@ -300,6 +336,7 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
         console.log("Sent=  "+ r.bytesSent);
         console.log("key " +photoKey);
         var photoResult = PhotoService.save({uid: currentUser, tid: tripKey, did:dayKey, pid: photoKey }, {}, function(result){
+          $state.go('tab.photos');
         }); 
         
       };
@@ -311,9 +348,20 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
       };
 
       };
+  
+  //delete photo
+  $scope.deletePhoto = function(photoKey){
+    console.log("photo key delete is "+ photoKey);
+    PhotoDelete.delete({pid: photoKey},
+        function(){
+          $state.go($state.current, {}, {reload: true});
+          $state.go($state.current, {}, {reload: true});
+        }
+        );
+  };
 })
 
 //add a day for a user/trip
-.controller('AddDayCtrl', function($scope, $localStorage, DayService) {
+.controller('ExploreCtrl', function($scope, $localStorage, DayService) {
 
 });

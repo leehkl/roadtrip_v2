@@ -4,56 +4,44 @@
 -->
 <ion-view view-title="Add Day">
   <ion-content class="padding">
- <h3 class="balanced">DAY</h3>
-  <!--
-  <form ng-submit="addDay()" name="dayAdd">
-      <div class="list">
-        <label class="item item-input">
-          <span class="input-label">Name</span>
-          <input type="text" name="name" ng-model="trip.name" required/>
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Source</span>
-          <input type="text" ng-model="trip.source"/>
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Destination</span>
-          <input type="text" ng-model="trip.destination"/>
-        </label>
+  <h3 class="balanced">DAY</h3>
+  <div ng-controller="DayCtrl">
+    <form ng-submit="addDay()" name="DayAdd">
+        <div class="list">
           <label class="item item-input">
-          <span class="input-label">Miles</span>
-          <input type="number" name="miles" min="0" ng-model="trip.miles" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"/>
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Time</span>
-          <input type="number" name="time" min="0" ng-model="trip.time" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"/>
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Mode</span>
-          <input type="text" ng-model="trip.mode"/>
-        </label>
+            <span class="input-label">Name</span>
+            <input type="text" name="nameAdd" ng-model="name" required/>
+          </label>
+          <label class="item item-input">
+            <span class="input-label">Source</span>
+            <input type="text" ng-model="source"/>
+          </label>
+          <label class="item item-input">
+            <span class="input-label">Destination</span>
+            <input type="text" ng-model="destination"/>
+          </label>
+            <label class="item item-input">
+            <span class="input-label">Miles</span>
+            <input type="number" name="milesAdd" min="0" ng-model="miles" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"/>
+          </label>
+          <label class="item item-input">
+            <span class="input-label">Time</span>
+            <input type="number" name="timeAdd" min="0" ng-model="time" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"/>
+          </label>
+        </div>
+        <div class="padding">
+          <p class="assertive" ng-show="dayAdd.nameAdd.$error.required">
+          *Give your day a name!
+          </p>
+          <p class="assertive" ng-show="!dayAdd.milesAdd.$valid">
+          *Miles needs to be a valid decimal!
+          </p>
+          <p class="assertive" ng-show="!daypAdd.timeAdd.$valid">
+          *Time needs to be a valid decimal!
+          </p>
+        <input type="submit" class="button button-outline button-balanced" value="Submit"/>
       </div>
-      <div class="padding">
-        <p class="assertive" ng-show="tripEdits.name.$error.required">
-        *Give your trip a name!
-        </p>
-        <p class="assertive" ng-show="!tripEdits.miles.$valid">
-        *Miles needs to be a valid decimal!
-        </p>
-        <p class="assertive" ng-show="!tripEdits.time.$valid">
-        *Time needs to be a valid decimal!
-        </p>
-      </div>
-      <input type="submit" class="button button-outline button-balanced" value="Submit"/>
-
-    </form>
-    <ion-list class="padding">
-    <h3 class="balanced">Days
-      <a href="#tab/addDay"><i class="ion-android-add" href="#/tab/addDay"></i></a>
-    </h3>
-      <ion-item ng-repeat="day in days" type="item-text-wrap" href="#/tab/account/{{day.key}}">
-        <p>{{day.name}}</p>
-      </ion-item>
-    </ion-list>
--->  </ion-content>
+      </form>
+    </div>
+  </ion-content>
 </ion-view>

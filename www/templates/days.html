@@ -1,0 +1,25 @@
+<!--
+  ng-pattern regex for email sourced from:
+  stackoverflow.com/questions/23671934/form-validation-email-validation-not-working-as-expected-in-angularjs
+-->
+<ion-view view-title="Days">
+  <ion-content class="padding">
+  <ion-header-bar class="bar-light">
+    <div class=buttons">
+      <button class="button icon-left ion-android-remove" ng-click="data.showDelete = !data.showDelete"></button>
+    </div>
+    <h3 class="balanced">DAYS</h3>
+    <div class="buttons">
+      <a class="button icon-right ion-android-add" href="#/tab/addDay"></a>
+    </div>
+  </ion-header-bar>
+  <div class="padding"></div>
+  <div class="padding"></div>
+  <ion-list class="padding" show-delete="data.showDelete">
+    <ion-item ng-repeat="day in days" type="item-text-wrap" href="#/tab/editDay/{{day.key}}">
+    {{day.name}}
+    <ion-delete-button class="ion-minus-circled" ng-click="deleteDay(day.key)">
+    </ion-item>
+  </ion-list>
+  </ion-content>
+</ion-view>

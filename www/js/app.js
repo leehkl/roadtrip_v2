@@ -76,13 +76,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
 
-  .state('tab.camera', {
-      url: '/camera',
+  .state('tab.explore', {
+      url: '/explore',
       cache: false,
       views: {
-        'tab-camera': {
-          templateUrl: 'templates/camera.html',
-//          controller: 'ChatsCtrl'
+        'tab-explore': {
+          templateUrl: 'templates/explore.html',
+          controller: 'ExploreCtrl'
         }
       }
     })
@@ -120,6 +120,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
   
+  .state('tab.days', {
+    url: '/days',
+    cache: false,
+    views: {
+      'tab-account': {
+        templateUrl: 'templates/days.html',
+        controller: 'DayCtrl'
+      }
+    }
+  })
+  
   .state('tab.editDay', {
     url: '/editDay/:daykey',
     cache: false,
@@ -148,18 +159,29 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     views: {
       'tab-account': {
         templateUrl: 'templates/addDay.html',
-        controller: 'AddDayCtrl'
+        controller: 'DayCtrl'
       }
     }
   })
 
+  .state('tab.photos', {
+    url: '/photos',
+    cache: false,
+    views: {
+      'tab-account': {
+        templateUrl: 'templates/photos.html',
+        controller: 'PhotoCtrl'
+      }
+    }
+  })
+  
   .state('tab.addPhoto', {
     url: '/addPhoto',
     cache: false,
     views: {
       'tab-account': {
         templateUrl: 'templates/addPhoto.html',
-        controller: 'AddPhotoCtrl'
+        controller: 'PhotoCtrl'
       }
     }
   });

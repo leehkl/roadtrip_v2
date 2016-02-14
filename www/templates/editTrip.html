@@ -48,13 +48,6 @@
     <div>
       <p class="balanced" >{{result}}</p>
     </div>
-    <ion-list class="padding">
-    <h3 class="balanced">Days
-      <a href="#tab/addDay"><i class="ion-android-add" href="#/tab/addDay"></i></a>
-    </h3>
-      <ion-item ng-repeat="day in days" type="item-text-wrap" href="#/tab/editDay/{{day.key}}">
-        <p>{{day.name}}</p>
-      </ion-item>
-    </ion-list>
+    <a class="button icon-right ion-chevron-right button-block button-energized" href="#tab/days" align="left">DAYS</a>
   </ion-content>
 </ion-view>
