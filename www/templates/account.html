@@ -39,13 +39,7 @@
       <input type="submit" class="button button-outline button-balanced" value="Submit"/>
       <p class="balanced">{{result}}</p>
     </div>
-      <h3 class="balanced">TRIPS
-      <a href="#tab/addTrip"><i class="ion-android-add" href="#/tab/addTrip"></i></a>
-    </h3>
-      <ion-item ng-repeat="trip in trips" type="item-text-wrap" href="#/tab/account/{{trip.key}}">
-        <p>{{trip.name}}</p>
-      </ion-item>
-    </ion-list>
+    <a class="button icon-right ion-chevron-right button-block button-energized" href="#tab/trips" align="left">TRIPS</a>
     <div class="padding">
       <button class="button button-outline button-assertive" ng-click="logOut()">Log Out</button>
     </div>

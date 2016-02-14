@@ -97,6 +97,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     }
   })
+  
+  .state('tab.trips', {
+    url: '/trips',
+    cache: false,
+    views: {
+      'tab-account': {
+        templateUrl: 'templates/trips.html',
+        controller: 'TripCtrl'
+      }
+    }
+  })
 
   .state('tab.editTrip', {
     url: '/account/:tripkey',
@@ -126,7 +137,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     views: {
       'tab-account': {
         templateUrl: 'templates/addTrip.html',
-        controller: 'AddTripCtrl'
+        controller: 'TripCtrl'
       }
     }
   })

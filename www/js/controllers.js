@@ -52,7 +52,7 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
 })
 
 //get account/trip information for user
-.controller('AccountCtrl', function($scope, $localStorage, $ionicHistory, $state, UserService, TripService) {
+.controller('AccountCtrl', function($scope, $localStorage, $ionicHistory, $state, UserService) {
   //FOR TESTING PURPOSES ONLY
 //  $localStorage.currentUser = 5634472569470976;
   //END TESTING STRING
@@ -68,14 +68,11 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
     alert("You must log in first");
     $state.go('tab.main');
   }
-
   //get profile info
   $scope.profileInfo = UserService.get({id:currentUser}, function(){
     //create copy for comparison later
     originalProfile = angular.copy($scope.profileInfo);
   });
-  //get trips
-  $scope.trips = TripService.query({uid:currentUser});
 
   //update profile info
   $scope.editProfile = function(){
@@ -127,6 +124,7 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
       checkEmail();
     } 
 
+
   //log out a user
   $scope.logOut = function(){
     //reset local params
@@ -141,34 +139,54 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
   };
 })
 
-//iadd a trip for a user
-.controller('AddTripCtrl', function($scope, $localStorage, TripService) {
+//add a trip for a user
+.controller('TripCtrl', function($scope, $localStorage, $state, TripService) {
 
   //set current account 
   var currentUser = $localStorage.currentUser;
+  
+  //get trips
+  $scope.trips = TripService.query({uid:currentUser});
  
-  //update trip info
+  //add trip info
   $scope.addTrip = function(){
     console.log("name" + $scope.name);
     var tripKey = TripService.save({uid:currentUser, "name": $scope.name, "source":$scope.source, "destination": $scope.destination, "miles":$scope.miles, "time": $scope.time, "mode": $scope.mode}, {}
       , function(){
-        $scope.result = "Trip Added!";
+        $state.go('tab.trips');
     })
+  };
+  
+  //delete trip
+  $scope.deleteTrip = function(tripKey){
+    console.log("trip key delete is "+ tripKey);
+    TripService.delete({uid: currentUser, tid: tripKey},
+        function(){
+          $state.go($state.current, {}, {reload: true});
+        }
+        );
   };
 })
 
 //edit a trip for a user
-.controller('EditTripCtrl', function($scope, $stateParams, $localStorage, TripService, DayService, PhotoService) {
+.controller('EditTripCtrl', function($scope, $stateParams, $localStorage, $state, TripService, DayService, PhotoService) {
 
   //set global vars
   var currentUser = $localStorage.currentUser;
   $localStorage.currentTrip = $stateParams.tripkey;
   var tripKey = $localStorage.currentTrip;
   
+  //flag for no-show delete state
+  $scope.data = {
+    showDelete:false
+  }
   //FOR TESTING PURPOSES ONLY
 // var tripKey = 5707702298738688;
   //$localStorage.currentTrip = tripKey;
   //END testing string
+
+  //get trips
+  $scope.trips = TripService.query({uid:currentUser});
 
   //get trip
   $scope.trip = TripService.get({uid:currentUser, tid: tripKey},
@@ -185,6 +203,7 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
 
   //get days
   $scope.days = DayService.query({uid:currentUser, tid:tripKey});
+  
 
   })
 
