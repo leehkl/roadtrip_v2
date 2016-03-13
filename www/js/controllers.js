@@ -134,6 +134,7 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
         $scope.existing = UserService.get({email: $scope.profileInfo.email},
             function(){
               if($scope.existing.keys.length != 0){
+                console.log("existing keys length", $scope.existing);
                 $scope.badResult = "Email is already in use.";
               }else{
                 updateUser();
@@ -257,7 +258,7 @@ angular.module('starter.controllers', ['starter.services','ionic', 'ngResource',
   //add day 
   $scope.addDay = function(){
     console.log("name" + $scope.name);
-    DayService.save({uid:currentUser,tid:tripKey, "name": $scope.name, "source":$scope.source, "destination": $scope.destination, "miles":$scope.miles, "time": $scope.timee}, {}
+    DayService.save({uid:currentUser,tid:tripKey, "name": $scope.name, "source":$scope.source, "destination": $scope.destination, "miles":$scope.miles, "time": $scope.time}, {}
       , function(){
         $state.go('tab.days');
     })
